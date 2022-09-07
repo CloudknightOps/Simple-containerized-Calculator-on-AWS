@@ -1,8 +1,8 @@
 ---
 Description: >
- This template deploys a VPC, with a Subnet. It deploys an Internet Gateway, with a default 
-    route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ), 
-    and default routes for them in the private subnets.
+ This template is a test template to provide the Infrastructure for My Containerized
+ Web application on AWS. This template deploys a VPC,with a Subnet, an Internet Gateway,
+ a subnet, a DynamoDB table, a cloud9 role and profile along with an ec2 instance a security group. 
 Parameters: 
    
   VpcCIDR: 
