@@ -1,5 +1,6 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: This template deploys a VPC, with a Subnet. It deploys an Internet Gateway, with a default 
+---
+Description: >
+ This template deploys a VPC, with a Subnet. It deploys an Internet Gateway, with a default 
     route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ), 
     and default routes for them in the private subnets.
 Parameters: 
@@ -132,21 +133,23 @@ Resources:
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
-        CidrIp: 0.0.0.
- EC2Instance:
+        CidrIp: 0.0.0.0/0
+  EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.micro
-      SecurityGroups:
+      InstanceType: t3.large
+      SubnetId: !Ref subnet
+      SecurityGroupIds: 
         - !Ref WebServerSecGroup
-      KeyName: udacity
-      ImageId: ami-068663a3c619dd892
+      KeyName: Container
+      ImageId: ami-052efd3df9dad4825
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
           sudo apt-get update -y
           sudo apt-get install apache2 -y
-          sudo systemctl start apache2.service  
+          sudo systemctl start apache2.service 
+          echo "<html><body><h1>Pernell Whittaker is one of my favorite boxers. This message is provided to you by Region ${AWS::Region}<h1></body></html>" > /var/www/html/index.html 
       Tags:
         - Key: Name
           Value: "Container Instance"
